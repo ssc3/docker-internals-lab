@@ -15,7 +15,7 @@ terminal (1)
 create a file device for our CoW fs to user
 input:
 ```
-mkdir -p /cowfs
+mkdir /cowfs
 dd if=/dev/zero of=/cowfs/btrfs.img bs=1024 count=10000000
 ```
 output:
