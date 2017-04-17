@@ -1,18 +1,18 @@
-#### obtain files from link
+#### Obtain files from link
 
 link to lab files:
 provided in email
 
-#### requirements
+#### Requirements
 
-> this lab must be run as root
-> to get root access run `sudo su -` from the command line
+* this lab must be run as root
+* to get root access run `sudo su -` from the command line
 
-#### transfer file to lab vm
+#### Transfer file to lab vm
 
 `scp Downloads/lab-05-IaC.zip docker@<LAB_VM_IP>:/tmp`
 
-#### unzip in your home directory
+#### Unzip in your home directory
 
 input:
 
@@ -21,8 +21,6 @@ sudo su -
 apt-get install -y unzip
 cp /tmp/lab-05-IaC.zip .
 unzip lab-05-IaC.zip
-
-#######
 
 cd lab-05-IaC/
 ```
@@ -57,9 +55,9 @@ docker@159.203.219.157 ~: cd lab-05-IaC/
 docker@159.203.219.157 ~/lab-05-IaC:
 ```
 
-#### build terraform tool
+#### Build terraform tool
 
-review the Dockerfile
+Review the Dockerfile
 
 ```bash
 input:
@@ -76,7 +74,7 @@ docker build -t terraform .
 
 edit `terraform.tfvars`
 
-##### at line 1 of terraform.tfvars
+##### At line 1 of terraform.tfvars
 
 change `name = "training"`
 alter name value with `<your_name>`
@@ -86,7 +84,8 @@ alter name value with `<your_name>`
 ```
 docker run --rm -it -v $(pwd):/root/ terraform apply
 
-# when complete run the following to grab IP addresses of UCP and DTR to use with the guide.pdf
+# when complete run the following to grab IP addresses of UCP and DTR to use 
+# with the guide.pdf
 cat ips.txt
 
 #### output example
@@ -94,12 +93,12 @@ UCP URL: https://104.236.156.152
 DTR URL: https://192.241.223.231
 ```
 
-#### work with the UCP cluster
+#### Work with the UCP cluster
 
 see the **guide.pdf**
 
-#### cleanup cluster
+#### Cleanup cluster
 
 ```
-docker run --rm -it -v `pwd`:/root/ terraform destroy
+docker run --rm -it -v $(pwd):/root/ terraform destroy
 ```
