@@ -18,7 +18,6 @@ provided in email
 input:
 ```bash
 sudo su -
-apt-get install -y unzip
 cp /tmp/lab-05-IaC.zip .
 unzip lab-05-IaC.zip
 
