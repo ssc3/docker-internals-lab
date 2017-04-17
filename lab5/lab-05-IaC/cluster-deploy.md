@@ -90,8 +90,8 @@ docker run --rm -it -v $(pwd):/root/ terraform apply
 cat ips.txt
 
 #### output example
-
-
+UCP URL: https://104.236.156.152
+DTR URL: https://192.241.223.231
 ```
 
 #### work with the UCP cluster
