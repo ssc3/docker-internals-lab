@@ -27,31 +27,29 @@ cd lab-05-IaC/
 output:
 
 ```
-docker@159.203.219.157 ~: unzip lab-05-IaC.zip
+root@dockerhost1 ~: unzip lab-05-IaC.zip
 Archive:  lab-05-IaC.zip
    creating: lab-05-IaC/
-  inflating: lab-05-IaC/compose.txt
+  inflating: lab-05-IaC/.cluster-deploy.md.swp
+   creating: lab-05-IaC/.terraform.d/
+  inflating: lab-05-IaC/.terraform.d/checkpoint_cache
+  inflating: lab-05-IaC/.terraform.d/checkpoint_signature
+  inflating: lab-05-IaC/.terraform.tfstate.lock.info
+   creating: lab-05-IaC/client-bundle/
+  inflating: lab-05-IaC/client-bundle/client-bundle.sh
+  inflating: lab-05-IaC/client-bundle/Dockerfile
+  inflating: lab-05-IaC/cluster-deploy.md
+  inflating: lab-05-IaC/cluster-deploy.pdf
   inflating: lab-05-IaC/ddc-install.sh
-   creating: __MACOSX/
-   creating: __MACOSX/lab-05-IaC/
-  inflating: __MACOSX/lab-05-IaC/._ddc-install.sh
-  inflating: lab-05-IaC/ddc-join.sh
-  inflating: __MACOSX/lab-05-IaC/._ddc-join.sh
-  inflating: lab-05-IaC/ddc.tf
-  inflating: __MACOSX/lab-05-IaC/._ddc.tf
-  inflating: lab-05-IaC/Dockerfile.txt
+  inflating: lab-05-IaC/Dockerfile
+  inflating: lab-05-IaC/dtr-join.sh
   inflating: lab-05-IaC/guide.pdf
-  inflating: __MACOSX/lab-05-IaC/._guide.pdf
+  inflating: lab-05-IaC/main.tf
   inflating: lab-05-IaC/terraform.tfvars
-  inflating: __MACOSX/lab-05-IaC/._terraform.tfvars
   inflating: lab-05-IaC/training.key
   inflating: lab-05-IaC/training.key.pub
   inflating: lab-05-IaC/variables.tf
-  inflating: __MACOSX/lab-05-IaC/._variables.tf
-docker@159.203.219.157 ~: ls
-lab-05-IaC  lab-05-IaC.zip  __MACOSX
-docker@159.203.219.157 ~: cd lab-05-IaC/
-docker@159.203.219.157 ~/lab-05-IaC:
+  inflating: lab-05-IaC/worker-join.sh
 ```
 
 #### Build terraform tool
