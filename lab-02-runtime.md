@@ -35,8 +35,8 @@ docker pull ubuntu:14.04
 testing containers >>>>>
 
 ```shell
-mkdir c-bin
-cp /usr/bin/stress-ng c-bin/
+mkdir /usr/bin/c-bin
+cp /usr/bin/stress-ng /usr/bin/c-bin/
 ```
 
 #### rkt runtime
