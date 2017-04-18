@@ -49,7 +49,9 @@ cd /tmp
 
 ./stress-ng --cpu 8 --io 4 --vm 2 --vm-bytes 256M --fork 4 --timeout 10s --metrics
 
-#
+# to exit rkt
+
+exit
 ```
 
 
@@ -62,9 +64,9 @@ lxc-console -n myubuntu
 
 (user name: ubuntu pass: ubuntu)
 
-apt-get update
+sudo apt-get update
 
-apt-get install -y stress
+sudo apt-get install -y stress
 
 stress --cpu 8 --io 4 --vm 2 --vm-bytes 256M --timeout 10s
 
