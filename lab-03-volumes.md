@@ -19,8 +19,6 @@ Setup plugin and docker volume >>>
 
 input:
 ```bash
-cd~
-
 docker run -d -v /run/docker/plugins/:/run/docker/plugins/ \
 -v `pwd`/vol-persist:/vol-persist/ \
 cwspear/docker-local-persist-volume-plugin
