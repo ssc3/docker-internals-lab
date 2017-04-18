@@ -12,7 +12,7 @@ input:
 ```bash
 cd ~
 
-mkdir -p vol-persist
+mkdir vol-persist
 ```
 
 Setup plugin and docker volume >>>
