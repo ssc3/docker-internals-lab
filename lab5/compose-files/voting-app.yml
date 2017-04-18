@@ -1,0 +1,37 @@
+---
+version: "3"
+
+services:
+  voting-app:
+    image: ehazlett/dockercon-voting-app
+    ports:
+      - "8000:80"
+    networks:
+      - voteapp
+  result-app:
+    image: ehazlett/dockercon-result-app
+    ports:
+      - "5000:80"
+    networks:
+      - voteapp
+  worker:
+    image: ehazlett/dockercon-worker
+    networks:
+      - voteapp
+  redis:
+    image: redis
+    ports:
+      - "6379"
+    networks:
+      - voteapp
+  db:
+    image: postgres:9.4
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - voteapp
+volumes:
+  db-data:
+
+networks:
+  voteapp:
