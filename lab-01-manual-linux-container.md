@@ -70,7 +70,7 @@ output:
 Create subvolume 'images/alpine'
 ```
 
-Now to borrow and image from docker
+Now to borrow an image from docker
 
 input:
 ```
