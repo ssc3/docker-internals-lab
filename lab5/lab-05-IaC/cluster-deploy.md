@@ -69,7 +69,7 @@ docker build -t terraform .
 
 #### Deploy UCP
 
-edit `terraform.tfvars`
+vi `terraform.tfvars`
 
 ##### At line 1 of terraform.tfvars
 
