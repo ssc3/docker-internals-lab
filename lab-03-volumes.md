@@ -17,6 +17,8 @@ mkdir vol-persist
 
 Setup plugin and docker volume >>>
 
+(For lots of good info about this plugin, see:   https://hub.docker.com/r/cwspear/docker-local-persist-volume-plugin/)
+
 input:
 ```bash
 docker run -d -v /run/docker/plugins/:/run/docker/plugins/ \
