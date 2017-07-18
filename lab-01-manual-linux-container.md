@@ -6,6 +6,10 @@ Lab VM with unshare tools, cgroup tools, btrfs tools
 
 > Note: This lab should be run as the **root** user
 
+```
+sudo -i
+```
+
 #### Preparation of filesystem:
 
 Prepare copy-on-write filesystem for container and image storage >>>
@@ -34,13 +38,24 @@ mkfs.btrfs /cowfs/btrfs.img
 
 output:
 ```
-WARNING! - Btrfs v3.12 IS EXPERIMENTAL
-WARNING! - see http://btrfs.wiki.kernel.org before using
+btrfs-progs v4.4
+See http://btrfs.wiki.kernel.org for more information.
 
-Turning ON incompat feature 'extref': increased hardlink limit per file to 65536
-fs created label (null) on cowfs/btrfs.img
-	nodesize 16384 leafsize 16384 sectorsize 4096 size 9.54GiB
-Btrfs v3.12
+Label:              (null)
+UUID:               0d6f310e-1735-427a-a0c7-93b8b2d00ca1
+Node size:          16384
+Sector size:        4096
+Filesystem size:    9.54GiB
+Block group profiles:
+  Data:             single            8.00MiB
+  Metadata:         DUP             496.25MiB
+  System:           DUP              12.00MiB
+SSD detected:       no
+Incompat features:  extref, skinny-metadata
+Number of devices:  1
+Devices:
+   ID        SIZE  PATH
+    1     9.54GiB  /cowfs/btrfs.img
 ```
 
 Now let's configure the CoW fs for use as a mount with our container
@@ -81,7 +96,7 @@ ls images/alpine/
 
 output:
 ```
-bin  dev  etc  home  lib  linuxrc  media  mnt  proc  root  run  sbin  srv  sys  tmp  usr  var
+bin  dev  etc  home  lib  media  mnt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
 
 #### Time to create a place for the container to store stuff
@@ -110,7 +125,7 @@ ls containers/dolly/
 
 output:
 ```
-bin  dev  etc  home  I_AM_A_CONTAINER  lib  linuxrc  media  mnt  proc  root  run  sbin  srv  sys  tmp  usr  var
+bin  dev  etc  home  I_AM_A_CONTAINER  lib  media  mnt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
 
 #### Give the new filesystem a test drive
@@ -130,21 +145,21 @@ exit
 output:
 ```
 # ls
-I_AM_A_CONTAINER  home              mnt               sbin              usr
-bin               lib               proc              srv               var
-dev               linuxrc           root              sys
-etc               media             run               tmp
+I_AM_A_CONTAINER  home              proc              srv               var
+bin               lib               root              sys
+dev               media             run               tmp
+etc               mnt               sbin              usr
 
 ...
 
 # apk
-apk-tools 2.6.7, compiled for x86_64.
+apk-tools 2.7.2, compiled for x86_64.
 
 usage: apk COMMAND [-h|--help] [-p|--root DIR] [-X|--repository REPO] [-q|--quiet] [-v|--verbose]
            [-i|--interactive] [-V|--version] [-f|--force] [-U|--update-cache] [--progress]
            [--progress-fd FD] [--no-progress] [--purge] [--allow-untrusted] [--wait TIME]
            [--keys-dir KEYSDIR] [--repositories-file REPOFILE] [--no-network] [--no-cache]
-           [--arch ARCH] [--print-arch] [ARGS]...
+           [--cache-dir CACHEDIR] [--arch ARCH] [--print-arch] [ARGS]...
 
 The following commands are available:
   add       Add PACKAGEs to 'world' and install (or upgrade) them, while ensuring that all
@@ -181,8 +196,9 @@ ls /sys/fs/cgroup/cpu/dolly/
 output:
 ```
 # ls /sys/fs/cgroup/cpu/dolly/
-cgroup.clone_children  cpu.cfs_period_us  cpu.shares  notify_on_release
-cgroup.procs           cpu.cfs_quota_us   cpu.stat    tasks
+cgroup.clone_children  cpuacct.usage         cpu.cfs_quota_us  notify_on_release
+cgroup.procs           cpuacct.usage_percpu  cpu.shares        tasks
+cpuacct.stat           cpu.cfs_period_us     cpu.stat
 ```
 
 Time to mount and switch over to the container's file-system >>>
@@ -207,9 +223,9 @@ output:
 root@dolly /cowfs:
 
 # ps
-PID TTY          TIME CMD
-	1 pts/3    00:00:00 bash
- 54 pts/3    00:00:00 ps
+  PID TTY          TIME CMD
+    1 pts/0    00:00:00 bash
+   22 pts/0    00:00:00 ps
 ```
 
 mounting the rest of the container filesystem
@@ -230,10 +246,10 @@ ls
 
 output:
 ```
-I_AM_A_CONTAINER  home              mnt               run               tmp
-bin               lib               oldroot           sbin              usr
-dev               linuxrc           proc              srv               var
-etc               media             root              sys
+I_AM_A_CONTAINER  home              oldroot           sbin              usr
+bin               lib               proc              srv               var
+dev               media             root              sys
+etc               mnt               run               tmp
 ```
 
 finally let's fix the process filesystem
@@ -261,9 +277,12 @@ terminal (2)
 
 input:
 ```
+# use root user
+sudo -i
+
 # CPID will contain the process ID of your “container” process; copy the id down you'll need it for later
 
-CPID=`pidof unshare` && echo $CPID
+CPID=$(pidof unshare) && echo $CPID
 ip link add name h$CPID type veth peer name c$CPID
 ip link set c$CPID netns $CPID
 
@@ -319,7 +338,7 @@ output:
 ```
 PID   USER     TIME   COMMAND
     1 root       0:00 sh
-   71 root       0:00 ps
+   36 root       0:00 ps
 ```
 
 **SUCCESS!!!**
