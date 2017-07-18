@@ -1,7 +1,7 @@
 >  please run this exercise as root <br>
 >  run `sudo su -` to obtain root access with the class vm
 
-#### check rkt installation 1.17.0
+#### check rkt installation 1.25.0
 ```bash
 rkt help
 rkt version
@@ -17,7 +17,7 @@ getting Ubuntu images for testing >>>
 #### rkt runtime
 
 ```bash
-rkt --insecure-options=image fetch docker://ubuntu:14.04
+rkt --insecure-options=image fetch docker://ubuntu:16.04
 ```
 
 #### lxc runtime
@@ -29,7 +29,7 @@ lxc-create -n myubuntu -t ubuntu
 #### docker runtime
 
 ```shell
-docker pull ubuntu:14.04
+docker pull ubuntu:16.04
 ```
 
 testing containers >>>>>
@@ -43,7 +43,8 @@ cp /usr/bin/stress-ng /usr/bin/c-bin/
 
 ```shell
 rkt run --interactive=true --net=host --volume stress,kind=host,source=/usr/bin/c-bin/ \
---mount volume=stress,target=/tmp --insecure-options=image docker://ubuntu:14.04
+--mount volume=stress,target=/tmp --volume lib,kind=host,source=/lib/x86_64-linux-gnu/ \
+--mount volume=lib,target=/lib/x86_64-linux-gnu --insecure-options=image docker://ubuntu:16.04
 
 cd /tmp
 
