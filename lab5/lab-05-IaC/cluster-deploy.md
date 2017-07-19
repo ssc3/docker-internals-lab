@@ -1,15 +1,5 @@
-
 lab files:
 provided in repository
-
-```
-# on lab vm
-
-cd ~
-
-
-# Enter username and password provided in email
-```
 
 #### Requirements
 
@@ -63,7 +53,7 @@ docker build -t terraform .
 
 #### Deploy UCP
 
-vi `terraform.tfvars`
+`vi terraform.tfvars`
 
 ##### At line 1 of terraform.tfvars
 
