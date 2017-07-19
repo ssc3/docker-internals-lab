@@ -76,7 +76,7 @@ DTR URL: https://192.241.223.231
 
 #### Work with the UCP cluster
 
-see the [**guide.pdf**](./guide.pdf)
+see the [**guide.md**](./guide.md)
 
 #### Cleanup cluster
 
