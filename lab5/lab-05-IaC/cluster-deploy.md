@@ -15,7 +15,7 @@ input:
 sudo su -
 git -c http.sslVerify=false clone https://git.nebulaworks.com/nebulaworks/docker-internals-lab.git
 
-cd lab-05-IaC/
+cd docker-internals-lab/lab5/lab-05-IaC/
 ```
 
 output:
@@ -66,7 +66,7 @@ alter name value with `<your_name>`
 docker run --rm -it -v $(pwd):/root/ terraform apply
 
 # when complete run the following to grab IP addresses of UCP and DTR to use 
-# with the guide.pdf
+# with the guide.md
 cat ips.txt
 
 #### output example
