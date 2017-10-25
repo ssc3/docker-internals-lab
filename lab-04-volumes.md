@@ -1,4 +1,4 @@
-## Lab 6 – set up a docker volume plugin
+## Lab 4 – set up a docker volume plugin
 
 > Requirements <br>
 > Lab VM with docker version 1.8+ <br>
