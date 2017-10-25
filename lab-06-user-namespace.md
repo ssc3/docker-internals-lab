@@ -1,4 +1,4 @@
-## Lab 4 – enable user namespace
+## Lab 6 – enable user namespace
 
 > Requirements <br>
 > Lab VM with docker version 1.8+ <br>
