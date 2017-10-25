@@ -45,7 +45,7 @@
 
 8. Finally, back on the host, run `docker container inspect u2`, and look for the `NetworkSettings` key to see what this connection looks like from outside the container's network namespace.
 
-## Defining Additional Bridge Networks
+## Defining Custom Bridge Networks
 
 In the last step, we investigated the default bridge network; now let's try making our own. User defined bridge networks work exactly the same as the default one, but provide DNS lookup by container name, and are firewalled from other networks by default.
 
