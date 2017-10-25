@@ -2,29 +2,23 @@
 
 ## The Default Bridge Network
 
-1. First, let's investigate the linux bridge that Docker provides by default. Start by installing bridge utilities:
-
-    ```bash
-    $ sudo yum install bridge-utils
-    ```
-
-2. Ask for information about the default Docker linux bridge, `Docker0`:
+1. First, let's examine the linux bridge that Docker provides by default. We will use the `brctl` tool to get information about the default Docker linux bridge, `Docker0`:
 
     ```bash
     $ brctl show docker0
     ```
 
-3. Start some named containers and check again:
+2. Start some named containers and check again:
 
     ```bash
-    $ docker container run --name=u1 -dt centos:7
-    $ docker container run --name=u2 -dt centos:7
+    $ docker container run --name=u1 -dt ubuntu:xenial
+    $ docker container run --name=u2 -dt ubuntu:xenial
     $ brctl show docker0
     ```
 
     You should see two new virtual ethernet (veth) connections to the bridge, one for each container. `veth` connections are a linux feature for creating an access point to a sandboxed network namespace.
 
-4. The `docker network inspect` command yields network information about what containers are connected to the specified network; the default network is always called `bridge`, so run:
+3. The `docker network inspect` command yields network information about what containers are connected to the specified network; the default network is always called `bridge`, so run:
 
     ```bash
     $ docker network inspect bridge
@@ -32,19 +26,24 @@
 
     and find the IP of your container `u1`.
 
-5. Connect to container `u2` of your containers using `docker container exec -it u2 /bin/bash`. 
+4. Connect to container `u2` of your containers using `docker container exec -it u2 /bin/bash`. 
 
-6. From inside `u2`, try pinging container `u1` by the IP address you found in the previous step; then try pinging `u1` by container name, `ping u1` - notice the lookup works with the IP, but not with the container name in this case.
-
-7. Still inside container `u2`, install `iproute`
+5. From inside `u2`, try pinging container `u1` by the IP address you found in the previous step; then try pinging `u1` by container name, `ping u1` - notice the lookup works with the IP, but not with the container name in this case.
 
     ```bash
-    yum install -y iproute
+    # you'll note that the ubuntu image doesn't have ping so you'll need to install it
+    $ apt-get update && apt-get install -y iputils-ping
+    ```
+
+6. Still inside container `u2`, install `iproute`
+
+    ```bash
+    apt-get install -y iproute
     ```
     
-8. Run `ip a` to see some information about what the network connection looks like from inside the container. Find the `eth0` entry, and confirm that the MAC address and IP assigned are the same (Docker always assigns MAC and IP pairs in this way, to avoid collisions).
+7. Run `ip a` to see some information about what the network connection looks like from inside the container. Find the `eth0` entry, and confirm that the MAC address and IP assigned are the same (Docker always assigns MAC and IP pairs in this way, to avoid collisions).
 
-9. Finally, back on the host, run `docker container inspect u2`, and look for the `NetworkSettings` key to see what this connection looks like from outside the container's network namespace.
+8. Finally, back on the host, run `docker container inspect u2`, and look for the `NetworkSettings` key to see what this connection looks like from outside the container's network namespace.
 
 ## Defining Additional Bridge Networks
 
@@ -67,7 +66,7 @@ In the last step, we investigated the default bridge network; now let's try maki
 3. Launch a container connected to your new network via the `--network` flag:
 
     ```bash
-    $ docker container run --name=u3 --network=my_bridge -dt centos:7
+    $ docker container run --name=u3 --network=my_bridge -dt ubuntu:xenial
     ```
 
 4. Use the `inspect` command to investigate the network settings of this container:
@@ -81,7 +80,7 @@ In the last step, we investigated the default bridge network; now let's try maki
 5. Launch another container, this time interactively:
 
     ```bash
-    $ docker container run --name=u4 --network=my_bridge -it centos:7
+    $ docker container run --name=u4 --network=my_bridge -it ubuntu:xenial
     ```
 
 6. From inside container `u4`, ping `u3` by name: `ping u3`. Recall this didn't work on the default bridge network between `u1` and `u2`; DNS lookup by container name is only enabled for explicitly created networks.
