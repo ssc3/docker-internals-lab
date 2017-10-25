@@ -1,6 +1,6 @@
-# Introduction to Container Networking
+# Docker Bridges
 
-## The Default Bridge Network
+## The Default Bridge Network - `Docker0`
 
 1. First, let's examine the linux bridge that Docker provides by default. We will use the `brctl` tool to get information about the default Docker linux bridge, `Docker0`:
 
@@ -120,7 +120,7 @@ In the last step, we investigated the default bridge network; now let's try maki
 
 ## Conclusion
 
-In this exercise, you explored the fundamentals of container networking. The key take away is that *containers on separate networks are firewalled from each other by default*. This should be leveraged as much as possible to harden your applications; if two containers don't need to talk to each other, put them on separate networks.
+In this exercise, you explored the bridge networking type. The key take away is that *containers on separate networks are firewalled from each other by default*. This should be leveraged as much as possible to harden your applications; if two containers don't need to talk to each other, put them on separate networks.
 
 You also explored a number of API objects:
 
