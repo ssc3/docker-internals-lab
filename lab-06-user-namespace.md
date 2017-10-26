@@ -3,6 +3,12 @@
 > Requirements <br>
 > Lab VM with docker version 1.8+ <br>
 
+> Note: This lab should be run as the **root** user
+
+```
+sudo -i
+```
+
 #### Preparation:
 
 View current container user >>>
