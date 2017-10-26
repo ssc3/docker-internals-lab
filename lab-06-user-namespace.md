@@ -19,11 +19,11 @@ cd ~
 
 docker rm -f `docker ps -qa`
 
-docker run -d nginx
+CID=$(docker run -d nginx) && echo $CID
 
 docker ps
 
-ps -p $(docker inspect --format='{{ .State.Pid }}' <CONTAINER ID>) -o pid,user
+ps -p $(docker inspect --format='{{ .State.Pid }}' $CID) -o pid,user
 ```
 
 #### reconfigure docker engine:
@@ -34,17 +34,13 @@ input:
 ```bash
 service docker stop
 
-vim /etc/default/docker
+### create a docker engine configuration file to enable the use of the user namespace
 
-### inside the docker config file replace the following line as shown below
-
-before:
-DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375"
-
-after:
-DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375 --userns-remap=default"
-
-### (end of edits)
+cat > /etc/docker/daemon.json << EOF
+{
+  "userns-remap": "default"
+}
+EOF
 
 service docker start
 ```
