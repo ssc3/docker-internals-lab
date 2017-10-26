@@ -51,23 +51,31 @@ View re-configured container user >>>
 
 input:
 ```bash
+### Verify the newly created user docker engine will use to map container users
+
+id dockremap
+
 cd ~
 
-docker rm -f `docker ps -qa`
-
-docker run -d nginx
+CID=$(docker run -d nginx) && echo $CID
 
 docker ps
 
-ps -p $(docker inspect --format='{{ .State.Pid }}' <CONTAINER ID>) -o pid,user
+ps -p $(docker inspect --format='{{ .State.Pid }}' $CID) -o pid,user
 ```
 
 view user re-map config files >>>
 
 ```bash
-cat /etc/subuid
+grep dockremap /etc/subuid
 
-cat /etc/subgid
+grep dockremap /etc/subgid
+```
+
+checkout to the newly created docker graph directory >>>
+
+```bash
+ls -l /var/lib/docker/<user-id>.<group-id>
 ```
 
 #### docker engine reset:
@@ -78,17 +86,7 @@ input:
 ```bash
 service docker stop
 
-vim /etc/default/docker
-
-### inside the docker config file replace the following line as shown below
-
-before:
-DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375 --userns-remap=default"
-
-after:
-DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375"
-
-### (end of edits)
+rm /etc/docker/daemon.json
 
 service docker start
 ```
