@@ -1,8 +1,8 @@
 # Docker Internals Labs
 
-* [Lab1](lab-01-manual-linux-container.md)
-* [Lab2](lab-02-runtime.md)
-* [Lab4](lab-04-volumes.md)
-* [Lab5](lab-05-networks.md)
-* [Lab6](lab-06-user-namespace.md)
-
+* [Lab 1 (Setup VM)](lab-01-setup-vm.md)
+* [Lab 1](lab-01-manual-linux-container.md)
+* [Lab 2](lab-02-runtime.md)
+* [Lab 3](lab-03-volumes.md)
+* [Lab 4](lab-04-networks.md)
+* [Lab 5](lab-05-user-namespace.md)
