@@ -1,24 +1,27 @@
-lab files:
-provided in repository
+# Cluster Deploy Guide
 
-#### Requirements
+## Requirements
 
-* this lab must be run as root
-* to get root access run `sudo su -` from the command line
-* must have login to repository
+* Lab files: Provided in repository
+* Login to the lab repository
 
-#### Obtain files from repository
-
-input:
-
+> Note: This lab should be run as the **root** user. This can be accomplished with the following command:
 ```bash
-sudo su -
-git -c http.sslVerify=false clone https://git.nebulaworks.com/nebulaworks/docker-internals-lab.git
-
-cd docker-internals-lab/lab5/lab-05-IaC/
+$ sudo su -
 ```
 
-output:
+## Obtain files from repository
+
+Input:
+
+```bash
+$ sudo su -
+$ git -c http.sslVerify=false clone \
+https://git.nebulaworks.com/nebulaworks/docker-internals-lab.git
+$ cd docker-internals-lab/lab5/lab-05-IaC/
+```
+
+Output:
 
 ```
 root@165.227.13.80 ~: sudo su -
@@ -36,50 +39,47 @@ Checking connectivity... done.
 root@165.227.13.80 ~: cd docker-internals-lab/lab5/lab-05-IaC/
 ```
 
-#### Build terraform tool
+## Build terraform tool
 
-Review the Dockerfile
-
-```bash
-input:
-cat Dockerfile
-```
-
-build terraform tool
+Review the Dockerfile:
 
 ```bash
-docker build -t terraform .
+$ cat Dockerfile
 ```
 
-#### Deploy UCP
+Build the terraform Docker image:
 
-`vi terraform.tfvars`
+```bash
+$ docker build -t terraform .
+```
 
-##### At line 1 of terraform.tfvars
+## Deploy UCP
 
-change `name = "training"`
-alter name value with `<your_name>`
+`vim terraform.tfvars # Or use the text editor of your choice.`
 
-##### Use terraform to stand up your new infrastructure
+At line 1 of terraform.tfvars:
+
+Change `name = "training"`, to `name = "<your-name>"`.
+
+## Use terraform to stand up your DDC infrastructure
 
 ```
-docker run --rm -it -v $(pwd):/root/ terraform apply
-
-# when complete run the following to grab IP addresses of UCP and DTR to use 
+$ docker run --rm -it -v $(pwd):/root/ terraform apply
+# When complete run the following to grab IP addresses of UCP and DTR to use
 # with the guide.md
-cat ips.txt
 
-#### output example
+$ cat ips.txt
+## output example
 UCP URL: https://104.236.156.152
 DTR URL: https://192.241.223.231
 ```
 
-#### Work with the UCP cluster
+## Work with the UCP cluster
 
-see the [**guide.md**](./guide.md)
+See [**guide.md**](./guide.md).
 
-#### Cleanup cluster
+## Cleanup cluster
 
 ```
-docker run --rm -it -v $(pwd):/root/ terraform destroy
+$ docker run --rm -it -v $(pwd):/root/ terraform destroy
 ```
