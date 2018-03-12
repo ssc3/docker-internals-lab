@@ -9,28 +9,28 @@
 #### Steps:
 1. Sign in to the AWS console (https://console.aws.amazon.com).
 2. Set your user region to the region that is geographically closest to you (click on the region tab right next to your username in the top right corner of the AWS console and select your desired region):
-![EC2 Regions](../assets/regions.png)
+![EC2 Regions](./assets/regions.png)
 3. Navigate to the EC2 (Elastic Cloud Compute) dashboard (Services > EC2):
-![EC2 Dashboard](../assets/ec2.png)
+![EC2 Dashboard](./assets/ec2.png)
 4. Click "Launch Instance".
 5. Select the "Ubuntu Server 16.04 LTS (HVM) ..." option:
-![EC2 Image Names](../assets/image-names.png)
+![EC2 Image Names](./assets/image-names.png)
 6. Make sure the "t2.micro" instance type is selected (the free-tier option), and click "Next: Configure Instance Details":
-![EC2 Instance Types](../assets/instance-types.png)
+![EC2 Instance Types](./assets/instance-types.png)
 7. Click "Next: Add Storage".
 7. Change the size of the "Root" volume type to 32 GiB, then click "Next: Add Tags":
-![EC2 Storage Options](../assets/storage.png)
+![EC2 Storage Options](./assets/storage.png)
 8. Add a tag with the key "name", and value "dockerInternalsLabInstance" (optional, but recommended).
 9. Click "Next: Configure Security Group".
 10. Select the "Create a new security group" option, then update the security group name to "openSecurityGroup", and the description as "Open to any IP address.". This will create a security group that allows attempted connections from any IP, which, for the purpose of this internal lab, is preferable in case assistance is required (allows both you and potentially your instructor to SSH into the instance). Please note however, that completely open security groups are strongly discouraged in production environments:
-![EC2 Security Groups](../assets/security-group.png)
+![EC2 Security Groups](./assets/security-group.png)
 11. Make sure the security group has one rule, and that rule's type is "SSH", its protocol is "TCP", its port range is "22", its source is "Custom", and it allows the IP range "0.0.0.0/0". You can add an optional description as well. Click "Review and Launch".
 12. You might get the "Improve your instances' security. Your security group, openSecurityGroup, is open to the world." warning. Please disregard this. Click "Launch".
 13. When the key pair window pops up, select the "Create a new key pair" option, and name it EC2\<region-name\>KeyPair, where \<region-name\> is the name for the region that you are currently in (key pairs for EC2 are defined within AWS regions). Make sure you download the newly created key pair, and it is in a safe location on your computer:
-![EC2 Key Pairs](../assets/key-pair.png)
+![EC2 Key Pairs](./assets/key-pair.png)
 14. Select the "I acknowledge that I have access to the selected private key file (MyEC2KeyPair.pem), and that without this file, I won't be able to log into my instance." option, the click "Launch Instances". Click "View Instances".
 15. Once the "dockerInternalsLabInstance" instance has an Instance State of "running", click on the instance. A description tab should pop up. Find the "IPv4 Public IP" field, and copy down that IP address:
-![EC2 Instances](../assets/instances.png)
+![EC2 Instances](./assets/instances.png)
 16. Connect to your instance using your recently created key pair:
     * Windows directions: https://linuxacademy.com/howtoguides/posts/show/topic/17385-use-putty-to-access-ec2-linux-instances-via-ssh-from-windows
     * OSX and Linux:
