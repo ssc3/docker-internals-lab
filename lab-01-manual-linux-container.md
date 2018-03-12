@@ -1,42 +1,46 @@
-### Lab 1 – manually creating a linux container
+### Lab 1: Manually creating a linux container:
 
 #### Requirements:
 
-Lab VM with unshare tools, cgroup tools, btrfs tools
+Lab VM with:
+* unshare tools
+* cgroup tools
+* stress-ng tools
+* btrfs tools
+* Docker
+* 32 GB space
 
-> Note: This lab should be run as the **root** user
+A recommended option is a Linux VM that is provisioned via AWS EC2 (directions can be found [here](https://ghe.nebulaworks.com/nebulaworks/docker-internals-lab/blob/master/lab-01-setup-vm.md)).
 
+> Note: This lab should be run as the **root** user. This can be accomplished with the following command:
 ```
 sudo -i
 ```
+#### Preparation of the file system:
 
-#### Preparation of filesystem:
+Prepare copy-on-write filesystem for container and image storage (_Terminal 1_):
 
-Prepare copy-on-write filesystem for container and image storage >>>
+Create a file device for our CoW fs to user:
 
-terminal (1)
-
-create a file device for our CoW fs to user
-input:
+Input:
 ```
 mkdir /cowfs
 dd if=/dev/zero of=/cowfs/btrfs.img bs=1024 count=10000000
 ```
-output:
+Output:
 ```
 10000000+0 records in
 10000000+0 records out
-10240000000 bytes (10 GB) copied, 53.4925 s, 191 MB/s
+40000000 bytes (10 GB) copied, 53.4925 s, 191 MB/s
 ```
 
-create a new CoW fs
+Create a new CoW fs:
 
-input:
+Input:
 ```
 mkfs.btrfs /cowfs/btrfs.img
 ```
-
-output:
+Output:
 ```
 btrfs-progs v4.4
 See http://btrfs.wiki.kernel.org for more information.
@@ -58,91 +62,82 @@ Devices:
     1     9.54GiB  /cowfs/btrfs.img
 ```
 
-Now let's configure the CoW fs for use as a mount with our container
+Now, let's configure the CoW fs for use as a mount with our container:
 
-input:
+Input:
 ```
 mount -o loop /cowfs/btrfs.img /cowfs/
 mount --make-private /
 ```
 
-#### Creating a container image
+#### Creating a container image:
 
-Create image root file system (borrow from docker) aka your container (read-only) image >>>
+Create image root file system (borrow from docker) aka your container (read-only) image (_Terminal 1_):
 
-terminal (1)
+Let's prep the storage location:
 
-Let's prep the storage location
-
-input:
+Input:
 ```
 cd /cowfs
 mkdir -p images containers
 btrfs subvol create images/alpine
 ```
-output:
+Output:
 ```
 Create subvolume 'images/alpine'
 ```
 
-Now to borrow an image from docker
+Now to borrow an image from Docker:
 
-input:
+Input:
 ```
 CID=$(docker run -d alpine true) && echo $CID
 docker export $CID | tar -C images/alpine -xf-
 ls images/alpine/
 ```
 
-output:
+Output:
 ```
 bin  dev  etc  home  lib  media  mnt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
 
-#### Time to create a place for the container to store stuff
+#### Time to create a place for the container to store stuff:
 
-Create the container's writeable filesystem >>>
+Create the container's writeable filesystem (_Terminal 1_):
 
-terminal (1)
-
-input:
+Input:
 ```
 btrfs subvol snapshot images/alpine containers/dolly
 ```
-
-output:
+Output:
 ```
 Create a snapshot of 'images/alpine' in 'containers/dolly'
 ```
 
-let's add something new to the container's filesystem
+Let's add something new to the container's filesystem:
 
-input:
+Input:
 ```
 touch containers/dolly/I_AM_A_CONTAINER
 ls containers/dolly/
 ```
-
-output:
+Output:
 ```
 bin  dev  etc  home  I_AM_A_CONTAINER  lib  media  mnt  proc  root  run  sbin  srv  sys  tmp  usr  var
 ```
 
-#### Give the new filesystem a test drive
+#### Give the new file system a test drive:
 
-Test container file system >>>
+Test container file system (_Terminal 1_):
 
-terminal (1)
-
-input:
+Input:
 ```
 chroot containers/dolly/ sh
 ls
 apk
 exit
 ```
-
-output:
+Output:
 ```
 # ls
 I_AM_A_CONTAINER  home              proc              srv               var
@@ -167,13 +162,11 @@ The following commands are available:
 ...
 ```
 
-#### Let's create the “container”
+#### Let's create the “container”:
 
-First create an isolated processing environment and enable process controls >>>
+First create an isolated processing environment and enable process controls (_Terminal 1_):
 
-terminal (1)
-
-input:
+Input:
 ```
 # create the cgroups to setup resource controls
 cgcreate -g cpu,memory,blkio,devices,freezer:/dolly
@@ -188,12 +181,12 @@ cgexec -g cpu,memory,blkio,devices,freezer:/dolly \
 prlimit --nofile=256 --nproc=512 --locks=32 \
 unshare --mount --uts --ipc --net --pid --fork --mount-proc=/proc bash
 
-# the preceding commands do not generate output
+# the preceding commands do not generate Output
 # instead run the following list command to verify cgroup creation
 ls /sys/fs/cgroup/cpu/dolly/
 ```
 
-output:
+Output:
 ```
 # ls /sys/fs/cgroup/cpu/dolly/
 cgroup.clone_children  cpuacct.usage         cpu.cfs_quota_us  notify_on_release
@@ -201,23 +194,20 @@ cgroup.procs           cpuacct.usage_percpu  cpu.shares        tasks
 cpuacct.stat           cpu.cfs_period_us     cpu.stat
 ```
 
-Time to mount and switch over to the container's file-system >>>
+Time to mount and switch over to the container's file system:
 
+> Note: from this point forward _Terminal 1_ will be operating inside the container:
 
-> Note: from this point forward terminal (1) will be operating inside the container
+Changing the identity to the container hostname and pstree:
 
-terminal (1)
-
-changing the identity to the container hostname and pstree
-
-input:
+Input:
 ```
 hostname dolly
 exec bash
 ps
 ```
 
-output:
+Output:
 ```
 # after running exec bash note the change in the prompt
 root@dolly /cowfs:
@@ -228,9 +218,9 @@ root@dolly /cowfs:
    22 pts/0    00:00:00 ps
 ```
 
-mounting the rest of the container filesystem
+Mounting the rest of the container filesystem:
 
-input:
+Input:
 ```
 cd containers/dolly
 mkdir oldroot
@@ -244,7 +234,7 @@ cd /
 ls
 ```
 
-output:
+Output:
 ```
 I_AM_A_CONTAINER  home              oldroot           sbin              usr
 bin               lib               proc              srv               var
@@ -252,30 +242,28 @@ dev               media             root              sys
 etc               mnt               run               tmp
 ```
 
-finally let's fix the process filesystem
+Finally let's fix the process filesystem:
 
-input:
+Input:
 ```
 mount -t proc none /proc
 umount -l /oldroot/
 mount
 ```
 
-output:
+Output:
 ```
 /dev/loop0 on / type btrfs (rw,relatime,space_cache,subvolid=258,subvol=/containers/dolly)
 none on /proc type proc (rw,relatime)
 ```
 
-#### Connecting your container to the world
+#### Connecting your container to the world:
 
-> Note: you now need to open a second terminal session to carry out the operations designated for all commands under terminal (2)
+> Note: you now need to open a second terminal session to carry out the operations designated for all commands under _Terminal 2_:
 
-Create a container network >>>
+Create a container network (_Terminal 2_):
 
-terminal (2)
-
-input:
+Input:
 ```
 # use root user
 sudo -i
@@ -290,11 +278,9 @@ ip link set c$CPID netns $CPID
 ip link set h$CPID master docker0 up
 ```
 
-Time to switch back to terminal (1) and configure the network adapter we just connected
+Time to switch back to _Terminal 1_ and configure the network adapter we just connected:
 
-terminal (1)
-
-input:
+Input:
 ```
 # remember that you are inside the container in this terminal session
 
@@ -309,7 +295,7 @@ echo nameserver 8.8.8.8 > etc/resolv.conf
 ping -c 4 google.com
 ```
 
-output:
+Output:
 ```
 PING google.com (216.58.195.238): 56 data bytes
 64 bytes from 216.58.195.238: seq=0 ttl=58 time=2.561 ms
@@ -322,19 +308,17 @@ PING google.com (216.58.195.238): 56 data bytes
 round-trip min/avg/max = 2.421/26.688/99.331 ms
 ```
 
-#### Last step ...time to switch over to the Alpine shell
+#### Last step: Time to switch over to the alpine shell:
 
-now that the container has been assembled it's time to interact with it >>>
+Now that the container has been assembled it's time to interact with it (_Terminal 1_):
 
-terminal (1)
-
-input:
+Input:
 ```
 exec chroot / sh
 ps
 ```
 
-output:
+Output:
 ```
 PID   USER     TIME   COMMAND
     1 root       0:00 sh
@@ -343,23 +327,20 @@ PID   USER     TIME   COMMAND
 
 **SUCCESS!!!**
 
-#### Time to cleanup our manual "container"
+#### Time to cleanup our manual "container":
 
-Exit and clean up “container”:
+Exit and clean up “container” (_Terminal 1_):
 
-terminal (1)
-
-input:
+Input:
 ```
 exit
 cgdelete -g cpu,memory,blkio,devices,freezer:/dolly
 ls /sys/fs/cgroup/cpu/dolly
 ```
 
-output:
+Output:
 ```
 ls: cannot access /sys/fs/cgroup/cpu/dolly: No such file or directory
 ```
-
 
 ### See you in lab two!

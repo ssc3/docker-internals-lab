@@ -1,45 +1,49 @@
->  please run this exercise as root <br>
->  run `sudo su -` to obtain root access with the class vm
+### Lab 2: Container runtimes:
 
-#### check rkt installation 1.25.0
+> Note: This lab should be run as the **root** user. This can be accomplished with the following command:
+```
+sudo su - 
+```
+
+#### Check rkt installation 1.25.0:
 ```bash
 rkt help
 rkt version
 ```
 
-#### check lxc configuration
+#### Check lxc configuration:
 ```bash
 lxc-checkconfig
 ```
 
-getting Ubuntu images for testing >>>
+Getting Ubuntu images for testing:
 
-#### rkt runtime
+#### rkt runtime:
 
 ```bash
 rkt --insecure-options=image fetch docker://ubuntu:16.04
 ```
 
-#### lxc runtime
+#### lxc runtime:
 
 ```bash
 lxc-create -n myubuntu -t ubuntu
 ```
 
-#### docker runtime
+#### Docker runtime:
 
 ```shell
 docker pull ubuntu:16.04
 ```
 
-testing containers >>>>>
+Testing containers:
 
 ```shell
 mkdir /usr/bin/c-bin
 cp /usr/bin/stress-ng /usr/bin/c-bin/
 ```
 
-#### rkt runtime
+#### rkt runtime:
 
 ```shell
 rkt run --interactive=true --net=host --volume stress,kind=host,source=/usr/bin/c-bin/ \
@@ -56,7 +60,7 @@ exit
 ```
 
 
-#### lxc runtime
+#### lxc runtime:
 
 ```bash
 lxc-start -n myubuntu -d
@@ -73,10 +77,9 @@ stress --cpu 8 --io 4 --vm 2 --vm-bytes 256M --timeout 10s
 
 ```
 
-> to exit the lxc container <br>
-> press the following key sequence `ctrl-a + q`
+> Note: To exit the lxc container press the following key sequence `ctrl-a + q`.
 
-#### docker runtime
+#### Docker runtime:
 
 ```bash
 docker run -it ubuntu /bin/bash
@@ -87,3 +90,5 @@ apt-get install -y stress-ng
 
 stress-ng --cpu 8 --io 4 --vm 2 --vm-bytes 256M --fork 4 --timeout 10s --metrics
 ```
+
+### See you in lab three!

@@ -1,7 +1,7 @@
 variable "token" {}
 
 variable "region" {
-  default = "sfo1"
+  default = "sfo2"
 }
 
 variable "ssh_fingerprint" {}

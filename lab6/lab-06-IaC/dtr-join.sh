@@ -16,7 +16,7 @@ sudo docker swarm join \
 	"$UCPIP:2377"
 
 # Set DTR Version
-VERSION="2.2.6"
+VERSION="2.4.2"
 
 # Set variable for host address
 HOSTIP=$(curl http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address)

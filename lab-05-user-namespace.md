@@ -1,19 +1,18 @@
-## Lab 6 – enable user namespace
+### Lab 5: Enable user namespace:
 
-> Requirements <br>
-> Lab VM with docker version 1.8+ <br>
+Lab VM with:
+* Docker (version 1.8+)
 
-> Note: This lab should be run as the **root** user
-
+> Note: This lab should be run as the **root** user. This can be accomplished with the following command:
 ```
 sudo -i
 ```
 
 #### Preparation:
 
-View current container user >>>
+View current container user:
 
-input:
+Input:
 ```bash
 cd ~
 
@@ -26,11 +25,11 @@ docker ps
 ps -p $(docker inspect --format='{{ .State.Pid }}' $CID) -o pid,user
 ```
 
-#### reconfigure docker engine:
+#### Reconfigure docker engine:
 
-reconfigure the docker engine to use the user namespace re-map (you must be root) >>>
+Reconfigure the docker engine to use the user namespace re-map (you must be root):
 
-input:
+Input:
 ```bash
 service docker stop
 
@@ -45,11 +44,11 @@ EOF
 service docker start
 ```
 
-#### test reconfigured engine:
+#### Test reconfigured engine:
 
-View re-configured container user >>>
+View re-configured container user:
 
-input:
+Input:
 ```bash
 ### Verify the newly created user docker engine will use to map container users
 
@@ -64,7 +63,7 @@ docker ps
 ps -p $(docker inspect --format='{{ .State.Pid }}' $CID) -o pid,user
 ```
 
-view user re-map config files >>>
+View user re-map config files:
 
 ```bash
 grep dockremap /etc/subuid
@@ -72,17 +71,17 @@ grep dockremap /etc/subuid
 grep dockremap /etc/subgid
 ```
 
-checkout to the newly created docker graph directory >>>
+Checkout to the newly created docker graph directory:
 
 ```bash
 ls -l /var/lib/docker/<user-id>.<group-id>
 ```
 
-#### docker engine reset:
+#### Docker engine reset:
 
-reconfigure the docker engine to return it to its orginal state (you must be root) >>>
+Reconfigure the docker engine to return it to its orginal state (you must be root):
 
-input:
+Input:
 ```bash
 service docker stop
 
@@ -90,3 +89,6 @@ rm /etc/docker/daemon.json
 
 service docker start
 ```
+
+### See you in lab six!
+
