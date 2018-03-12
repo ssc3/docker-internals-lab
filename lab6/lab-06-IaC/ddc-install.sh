@@ -7,7 +7,7 @@ curl https://get.docker.com | sh
 LICENSE_URL="https://s3-us-west-1.amazonaws.com/dockerdatacenterlicense/docker_subscription.lic"
 
 # Setting UCP_VERSION
-UCP_VERSION="2.1.4"
+UCP_VERSION="2.2.5"
 
 # Grab temporary DDC licence from S3 bucket
 # Change address if licence is located elsewhere
