@@ -94,7 +94,7 @@ Processing triggers for dbus (1.10.6-1ubuntu3.3) ...
 Processing triggers for ureadahead (0.100.0-19) ...
 ```
 
-* cgroup-tools:
+* stress-ng:
 ```bash
 $ sudo apt-get install stress-ng
 Reading package lists... Done
