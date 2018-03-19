@@ -16,27 +16,24 @@ Input:
 
 ```bash
 $ sudo su -
-$ git -c http.sslVerify=false clone \
-https://git.nebulaworks.com/nebulaworks/docker-internals-lab.git
-$ cd docker-internals-lab/lab5/lab-05-IaC/
+$ git clone https://ghe.nebulaworks.com/nebulaworks/docker-internals-lab.git
+$ cd docker-internals-lab/lab6/lab-06-IaC/
 ```
 
 Output:
 
 ```
-root@165.227.13.80 ~: sudo su -
-root@165.227.13.80 ~: git -c http.sslVerify=false clone
-https://git.nebulaworks.com/nebulaworks/docker-internals-lab.git
+root@ip-172-31-23-34:~# git clone https://ghe.nebulaworks.com/nebulaworks/docker-internals-lab.git
 Cloning into 'docker-internals-lab'...
-Username for 'https://git.nebulaworks.com': training
-Password for 'https://training@git.nebulaworks.com':
-remote: Counting objects: 132, done.
-remote: Compressing objects: 100% (3/3), done.
-remote: Total 132 (delta 0), reused 0 (delta 0), pack-reused 129
-Receiving objects: 100% (132/132), 1.90 MiB | 0 bytes/s, done.
-Resolving deltas: 100% (56/56), done.
+Username for 'https://ghe.nebulaworks.com': training
+Password for 'https://training@ghe.nebulaworks.com':
+remote: Counting objects: 357, done.
+remote: Compressing objects: 100% (19/19), done.
+remote: Total 357 (delta 10), reused 18 (delta 5), pack-reused 333
+Receiving objects: 100% (357/357), 8.06 MiB | 0 bytes/s, done.
+Resolving deltas: 100% (170/170), done.
 Checking connectivity... done.
-root@165.227.13.80 ~: cd docker-internals-lab/lab5/lab-05-IaC/
+root@ip-172-31-23-34:~# cd docker-internals-lab/lab6/lab-06-IaC/
 ```
 
 ## Build terraform tool
