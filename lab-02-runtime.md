@@ -33,7 +33,7 @@ lxc-create -n myubuntu -t ubuntu
 #### Docker runtime:
 
 ```shell
-docker pull ubuntu:16.04
+docker image pull ubuntu:16.04
 ```
 
 Testing containers:
@@ -82,7 +82,7 @@ stress-ng --cpu 8 --io 4 --vm 2 --vm-bytes 256M --fork 4 --timeout 10s --metrics
 #### Docker runtime:
 
 ```bash
-docker run -it ubuntu /bin/bash
+docker container run -it ubuntu /bin/bash
 
 apt-get update
 
