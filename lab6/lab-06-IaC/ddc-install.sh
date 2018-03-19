@@ -4,7 +4,7 @@
 curl https://get.docker.com | sh
 
 # Location of DDC license
-LICENSE_URL="https://s3-us-west-1.amazonaws.com/dockerdatacenterlicense/docker_subscription.lic"
+LICENSE_URL="https://s3-us-west-1.amazonaws.com/rhel-nwi/docker_subscription.lic"
 
 # Setting UCP_VERSION
 UCP_VERSION="2.2.5"
