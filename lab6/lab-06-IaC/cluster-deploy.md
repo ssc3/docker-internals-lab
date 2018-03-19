@@ -47,7 +47,7 @@ $ cat Dockerfile
 Build the terraform Docker image:
 
 ```bash
-$ docker build -t terraform .
+$ docker image build -t terraform .
 ```
 
 ## Deploy UCP
