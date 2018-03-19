@@ -5,7 +5,7 @@
 sudo su - 
 ```
 
-#### Check rkt installation 1.25.0:
+#### Check rkt installation 1.29.0:
 ```bash
 rkt help
 rkt version
