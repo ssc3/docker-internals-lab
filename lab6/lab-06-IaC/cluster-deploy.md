@@ -61,7 +61,8 @@ Change `name = "training"`, to `name = "<your-name>"`.
 ## Use terraform to stand up your DDC infrastructure
 
 ```
-$ docker run --rm -it -v $(pwd):/root/ terraform apply
+$ docker container run --rm -it -v $(pwd):/root/ terraform init
+$ docker container run --rm -it -v $(pwd):/root/ terraform apply
 # When complete run the following to grab IP addresses of UCP and DTR to use
 # with the guide.md
 
