@@ -71,9 +71,9 @@ lxc-console -n myubuntu
 
 sudo apt-get update
 
-sudo apt-get install -y stress
+sudo apt-get install -y stress-ng
 
-stress --cpu 8 --io 4 --vm 2 --vm-bytes 256M --timeout 10s
+stress-ng --cpu 8 --io 4 --vm 2 --vm-bytes 256M --fork 4 --timeout 10s --metrics
 
 ```
 
