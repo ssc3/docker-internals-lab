@@ -25,7 +25,7 @@ Create a file device for our CoW fs to user:
 Input:
 ```
 mkdir /cowfs
-dd if=/dev/zero of=/cowfs/btrfs.img bs=1024 count=10000000
+dd if=/dev/zero of=/cowfs/btrfs.img bs=1024 count=10000000 status=progress
 ```
 Output:
 ```
