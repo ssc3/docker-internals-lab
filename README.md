@@ -6,3 +6,4 @@
 * [Lab 3](lab-03-volumes.md)
 * [Lab 4](lab-04-networks.md)
 * [Lab 5](lab-05-user-namespace.md)
+* [Lab 6](./lab6/lab-06-IaC/README.md)
